@@ -23,10 +23,31 @@ export default function App() {
     setTodos(doneTodo);
   }
 
+  function clearTodos() {
+    setTodos([]);
+  }
+
+  let taskcount;
+
+  switch (todos.length) {
+    case 0:
+      taskcount = " zadań";
+      break;
+    case 1:
+      taskcount = " zadanie";
+      break;
+
+    case 2:
+      taskcount = " zadania";
+  }
+
   return (
     <main className="grid place-content-start gap-8 p-4">
       <h1 className="text-5xl">Do zrobienia</h1>
-      <h2 className="text-2xl">2 zadania</h2>
+      <h2 className="text-2xl">
+        {todos.length}
+        {taskcount}
+      </h2>
       <div>
         <ul>
           {todos.map((t) => (
@@ -56,23 +77,29 @@ export default function App() {
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
       />
-      <button
-        onClick={() => {
-          setTodos([
-            ...todos,
-            {
-              id: todos.length + 1,
-              name: todo,
-              deleted: false,
-              done: false,
-            },
-          ]);
-          setTodo("");
-        }}
-        className="border"
-      >
-        Add Todo
-      </button>
+      <div className="flex">
+        <button
+          onClick={() => {
+            if (todo.length === 0) return;
+            setTodos([
+              ...todos,
+              {
+                id: todos.length + 1,
+                name: todo,
+                deleted: false,
+                done: false,
+              },
+            ]);
+            setTodo("");
+          }}
+          className="border"
+        >
+          Add Todo
+        </button>
+        <button onClick={clearTodos} className="border">
+          Clear Todos
+        </button>
+      </div>
     </main>
   );
 }
